@@ -1,0 +1,4 @@
+../Core/Src/I2C_no_interupt.c:6:6:CMSIS_I2C_Reset	4	static
+../Core/Src/I2C_no_interupt.c:19:6:CMSIS_I2C2_Init	8	static
+../Core/Src/I2C_no_interupt.c:70:9:CMSIS_I2C_MemWrite	24	static
+../Core/Src/I2C_no_interupt.c:185:9:CMSIS_I2C_MemRead	24	static
