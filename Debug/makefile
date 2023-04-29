@@ -59,8 +59,8 @@ all: main-build
 main-build: kote_game.elf secondary-outputs
 
 # Tool invocations
-kote_game.elf kote_game.map: $(OBJS) $(USER_OBJS) C:\Users\RSolovyov\STM32CubeIDE\workspace_1.12.0\kote_game\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "kote_game.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\RSolovyov\STM32CubeIDE\workspace_1.12.0\kote_game\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="kote_game.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+kote_game.elf kote_game.map: $(OBJS) $(USER_OBJS) C:\Users\Solov\STM32CubeIDE\workspace_1.11.0\kote_game\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "kote_game.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Solov\STM32CubeIDE\workspace_1.11.0\kote_game\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="kote_game.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

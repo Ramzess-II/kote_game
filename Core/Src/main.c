@@ -1,5 +1,5 @@
 #include "main.h"
-#include "stdio.h"
+#include <stdlib.h>
 
 //---------- переменные из других файлов ----------//
 extern float gyrX_f;
@@ -18,6 +18,8 @@ extern struct _flash flash;
 float sleep_gyrX;              // для накопления данных с гиро
 float sleep_gyrY;
 float sleep_gyrZ;
+int32_t buf_filtr [34];
+uint8_t count_buf;
 
 struct flags flag;             // флаги
 
@@ -163,10 +165,22 @@ void check_new_game(void) {      // проверка не нужно ли нач
 
 void check_let (void) {
 	if (flag.start_game) {
-		if (accX_f > MIN_ACC || accX_f < MIN_ACC_M || accY_f > MIN_ACC || accY_f < MIN_ACC_M || accZ_f > MIN_ACC || accZ_f < MIN_ACC_M) {
-			return;
+		int sum = 0;
+		buf_filtr [count_buf] = (int32_t) gyrX_f + (int32_t) gyrY_f + (int32_t) gyrZ_f;
+		if (count_buf < 32)count_buf ++;
+		else count_buf = 0;
+		for (int i = 0; i < 32; i ++) {
+			sum += abs (buf_filtr [i]);
 		}
-		time_game = 5;
+		sum = sum >> 5;
+		if (sum > MAX_ROUND) {
+			time_game = 5;
+		}
+
+	/*	if (accX_f > MIN_ACC || accX_f < MIN_ACC_M || accY_f > MIN_ACC || accY_f < MIN_ACC_M || accZ_f > MIN_ACC || accZ_f < MIN_ACC_M) {
+			return;
+		}*/
+
 		/*if ((gyrX_f + gyrY_f + gyrZ_f) >  MAX_ROUND) {
 			time_game = 5;
 		}*/
@@ -188,7 +202,7 @@ void start (void) {    // моргание при старте
 void game(uint32_t game) {              // игра
 	flag.provoke = false;               // запретим провокацию
 	uint32_t mirror = game % MAX_PWM;   // промежуточная переменная для constrain
-	switch (game % 4) {                 // +1
+	switch (game % 8) {                 // +1
 	case 0:
 		set_PWM (constrain (mirror, MIN_PWM, MAX_PWM),0,constrain (mirror, MIN_PWM, MAX_PWM),0);  // установим шим под каждый вариант игры
 		time_game = random_time(game);  // время игры
@@ -208,6 +222,31 @@ void game(uint32_t game) {              // игра
 		set_PWM (0,0,constrain (mirror, MIN_PWM, MAX_PWM),0);
 		time_game = random_time(game);
 		LED_L_OFF;
+		break;
+	case 4:
+		set_PWM (0,0,0,constrain (mirror, MIN_PWM, MAX_PWM));
+		time_game = random_time(game);
+		LED_L_OFF;
+		break;
+	case 5:
+		set_PWM (constrain (mirror, MIN_PWM, MAX_PWM),0,0,0);
+		time_game = random_time(game);
+		LED_L_OFF;
+		break;
+	case 6:
+		set_PWM (0,constrain (mirror, MIN_PWM, MAX_PWM),constrain (mirror, MIN_PWM, MAX_PWM),0);
+		time_game = random_time(game);
+		LED_R_OFF;
+		break;
+	case 7:
+		set_PWM (constrain (mirror, MIN_PWM, MAX_PWM),0,constrain (mirror, MIN_PWM, MAX_PWM),0);
+		time_game = random_time(game);
+		LED_R_OFF;
+		break;
+	default:
+		set_PWM (constrain (mirror, MIN_PWM, MAX_PWM),0,constrain (mirror, MIN_PWM, MAX_PWM),0);
+		time_game = random_time(game);
+		LED_R_OFF;
 		break;
 	}
 }
