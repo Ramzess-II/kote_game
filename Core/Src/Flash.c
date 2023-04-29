@@ -9,7 +9,7 @@ void unlook_flash (void) {               // последовательность
 	  FLASH->KEYR = FLASH_KEY1;
 	  FLASH->KEYR = FLASH_KEY2;
 }
-
+// he
 void erase_flash (void) {
 	unlook_flash ();
 	SET_BIT(FLASH->CR, FLASH_CR_PER);     // установим бит стирания
