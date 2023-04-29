@@ -46,7 +46,7 @@ extern "C" {
 
 #define ZERO_PROGRAM            READ_BIT(GPIOB ->IDR, GPIO_IDR_IDR12)
 
-//A8, A9, A10, A11 motor
+//A8, A9, A10, A11 motor pin
 
 
 
